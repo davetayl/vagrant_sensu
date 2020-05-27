@@ -1,4 +1,4 @@
-#!/usrenv bash
+#!/usr/bin/env bash
 
 # Configure script
 set -e # Stop script execution on any error

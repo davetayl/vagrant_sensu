@@ -39,6 +39,7 @@ echo "- Tools installed -"
 curl -s https://packagecloud.io/install/repositories/sensu/stable/script.rpm.sh | sudo bash > /dev/null 2>&1
 dnf -y install sensu-go-agent sensu-go-cli sensu-go-backend > /dev/null 2>&1
 curl -L https://docs.sensu.io/sensu-go/latest/files/backend.yml -o /etc/sensu/backend.yml > /dev/null 2>&1
+curl -L https://github.com/davetayl/vagrant_sensu/blob/master/agent.yml -o /etc/sensu/agent.yml
 echo "- Sensu installed -"
 
 # Start application
@@ -46,6 +47,7 @@ systemctl start sensu-backend > /dev/null 2>&1
 export SENSU_BACKEND_CLUSTER_ADMIN_USERNAME=admin
 export SENSU_BACKEND_CLUSTER_ADMIN_PASSWORD=password
 sensu-backend init
+service sensu-agent start
 echo "- Sensu started -"
 
 echo "-----------------------------------------"

@@ -19,11 +19,22 @@ echo "- Name set -"
 dnf -yqe 3 install net-tools 
 echo "- Tools installed -"
 
+# Configure firewall
+echo "- Update Firewall -"
+systemctl enable --now firewalld.service
+firewall-cmd --permanent --add-service=http
+firewall-cmd --permanent --add-service=https
+firewall-cmd --permanent --add-port=8081/tcp
+firewall-cmd --permanent --add-port=3030/tcp
+firewall-cmd --permanent --add-port=3031/tcp
+firewall-cmd --permanent --add-port=8125/tcp
+firewall-cmd --reload
+
 # Install Application
 curl -s https://packagecloud.io/install/repositories/sensu/stable/script.rpm.sh | sudo bash #> /dev/null 2>&1
 dnf -yqe 3 install sensu-go-agent sensu-go-cli sensu-go-backend #> /dev/null 2>&1
 curl -L https://docs.sensu.io/sensu-go/latest/files/backend.yml -o /etc/sensu/backend.yml #> /dev/null 2>&1
-curl -L https://github.com/davetayl/vagrant_sensu/blob/master/agent.yml -o /etc/sensu/agent.yml
+curl -L https://raw.githubusercontent.com/davetayl/vagrant_sensu/master/agent.yml -o /etc/sensu/agent.yml
 echo "- Sensu installed -"
 
 # Start application

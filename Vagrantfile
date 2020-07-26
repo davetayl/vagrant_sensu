@@ -10,6 +10,26 @@ Vagrant.configure("2") do |config|
 	sensuapp.vm.provision "shell", path: "https://github.com/davetayl/Vagrant-General/raw/master/setup-centos8-nu.sh"
 	sensuapp.vm.provision "shell", path: "./provision-sensuapp.sh"
   end
+  config.vm.define "influxdb" do |influxdb|
+    influxdb.vm.box = "centos/8"
+	influxdb.vm.provider "virtualbox" do |vb|
+		vb.memory = 1024
+		vb.cpus = 1
+	end
+	influxdb.vm.network "private_network", ip: "10.0.0.18", netmask:"255.255.255.0"
+	influxdb.vm.provision "shell", path: "https://github.com/davetayl/Vagrant-General/raw/master/setup-centos8-nu.sh"
+	influxdb.vm.provision "shell", path: "./provision-influxdb.sh"
+  end
+  config.vm.define "grafana" do |grafana|
+    grafana.vm.box = "centos/8"
+	grafana.vm.provider "virtualbox" do |vb|
+		vb.memory = 2048
+		vb.cpus = 2
+	end
+	grafana.vm.network "private_network", ip: "10.0.0.19", netmask:"255.255.255.0"
+	grafana.vm.provision "shell", path: "https://github.com/davetayl/Vagrant-General/raw/master/setup-centos8-nu.sh"
+	grafana.vm.provision "shell", path: "./provision-grafana.sh"
+  end
   config.vm.define "agent1" do |agent1|
     agent1.vm.box = "centos/8"
 	agent1.vm.provider "virtualbox" do |vb|

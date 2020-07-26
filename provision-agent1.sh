@@ -6,12 +6,13 @@ echo ""; echo "-----------------------------------------"
 
 # Configure variables
 MYHOST=agent1
+MYHOSIP="10.0.0.33"
 echo "- Variables set -"
 
 # Set system name
 hostnamectl set-hostname $MYHOST
 cat >> /etc/hosts <<EOF
-10.0.0.18	$MYHOST $MYHOST.localdomain
+$MYHOSTIP	$MYHOST $MYHOST.localdomain
 EOF
 echo "- Name set -"
 
@@ -103,7 +104,7 @@ EOF
 
 echo "- Sensu installed -"
 
-service sensu-agent start
+systemctl enable --now sensu-agent
 echo "- Sensu started -"
 
 

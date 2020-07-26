@@ -23,10 +23,12 @@ config-file: "/etc/sensu/agent.yml"
 disable-assets: false
 log-level: "debug" # available log levels: panic, fatal, error, warn, info, debug
 
+# Everything below this line is configuring the agent itself, IPs should be 127.0.0.1
+
 ##
 # api configuration
 ##
-api-host: "10.0.0.17"
+api-host: "127.0.0.1"
 api-port: 3031
 disable-api: false
 events-burst-limit: 10
@@ -66,7 +68,7 @@ redact:
 # socket configuration
 ##
 disable-sockets: false
-socket-host: "10.0.0.17"
+socket-host: "127.0.0.1"
 socket-port: 3030
 
 ##
@@ -76,5 +78,5 @@ statsd-disable: false
 statsd-event-handlers:
   - example_handler
 statsd-flush-interval: 10
-statsd-metrics-host: "10.0.0.17"
+statsd-metrics-host: "127.0.0.1"
 statsd-metrics-port: 8125

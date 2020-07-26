@@ -24,10 +24,9 @@ echo "- Update Firewall -"
 systemctl enable --now firewalld.service
 firewall-cmd --permanent --add-service=http
 firewall-cmd --permanent --add-service=https
+firewall-cmd --permanent --add-port=3000/tcp
+firewall-cmd --permanent --add-port=8080/tcp
 firewall-cmd --permanent --add-port=8081/tcp
-firewall-cmd --permanent --add-port=3030/tcp
-firewall-cmd --permanent --add-port=3031/tcp
-firewall-cmd --permanent --add-port=8125/tcp
 firewall-cmd --reload
 
 # Install Application

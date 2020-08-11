@@ -17,7 +17,7 @@ EOF
 echo "- Name set -"
 
 # Install tools
-dnf -yqe 3 install net-tools
+dnf -yqe 3 install net-tools python3
 echo "- Tools installed -"
 
 # Install Application
@@ -103,6 +103,12 @@ statsd-metrics-port: 8125
 EOF
 
 echo "- Sensu installed -"
+
+# Install check-path.py
+curl -s "https://raw.githubusercontent.com/davetayl/Nagios-Plugins/master/check-path/check-path.py" -o /usr/bin/check-path.py
+chmod +x /usr/bin/check-path.py
+pip3 install icmplib
+echo "- check-path.py Installed -"
 
 systemctl enable --now sensu-agent
 echo "- Sensu started -"

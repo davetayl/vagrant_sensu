@@ -112,7 +112,7 @@ EOF
 echo "- Sensu installed -"
 
 # Install check-path.py
-curl --header "PRIVATE-TOKEN: Q9fHRa53yxX9-D8Gc8P4" -s "https://gitlab.com/api/v4/projects/20355815/repository/files/check-path.py/raw?ref=master" -o /tmp/check-path.py > /dev/null 2>&1
+curl  -s "https://raw.githubusercontent.com/davetayl/Nagios-Plugins/master/check-path/check-path.py" -o /tmp/check-path.py > /dev/null 2>&1
 pip3 install icmplib > /dev/null 2>&1
 nuitka3 --recurse-all /tmp/check-path.py -o /usr/bin/check-path.bin > /dev/null 2>&1
 chmod +s /usr/bin/check-path.bin > /dev/null 2>&1

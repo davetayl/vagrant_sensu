@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/env bash
 
 # Configure script
 set -e # Stop script execution on any error
@@ -6,7 +6,7 @@ echo ""; echo "-----------------------------------------"
 
 # Configure variables
 MYHOST=influxdb
-MYHOSIP="10.0.0.18"
+MYHOSTIP="10.0.0.18"
 echo "- Variables set -"
 
 # Set system name
@@ -22,9 +22,9 @@ echo "- Tools installed -"
 
 # Configure firewall
 systemctl enable --now firewalld.service
-firewall-cmd --permanent --add-service=http
-firewall-cmd --permanent --add-service=https
-firewall-cmd --permanent --add-port=8086/tcp
+firewall-cmd --permanent --add-service=http > /dev/null 2>&1
+firewall-cmd --permanent --add-service=https > /dev/null 2>&1
+firewall-cmd --permanent --add-port=8086/tcp > /dev/null 2>&1
 firewall-cmd --reload
 echo "- Firewall Updated -"
 
@@ -231,8 +231,16 @@ cat <<EOF > /etc/influxdb/influxdb.conf
   # max-version = "tls1.3"
 EOF
 
-
-
 systemctl enable --now influxdb
-
+sleep 5
 echo "- InfluxDB configured and running -"
+
+# Create Sesnu Database
+curl "http://localhost:8086/query" --data-urlencode "q=CREATE USER admin WITH PASSWORD 'password' WITH ALL PRIVILEGES"
+echo "- admin user created - "
+curl "http://localhost:8086/query?u=admin&p=password" --data-urlencode "q=CREATE USER sensu WITH PASSWORD 'password' WITH ALL PRIVILEGES"
+echo "- sensuuser user created - "
+curl -XPOST "http://localhost:8086/query?u=admin&p=password" --data-urlencode 'q=CREATE DATABASE "sensu"'
+echo "- influxdb sensu created -"
+curl "http://localhost:8086/query?u=admin&p=password" --data-urlencode "q=grant ALL on sensu to sensu "
+echo "- Sensu user granted access on sensu database- "

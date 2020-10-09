@@ -27,6 +27,7 @@ Vagrant.configure("2") do |config|
 		vb.cpus = 2
 	end
 	grafana.vm.network "private_network", ip: "10.0.0.19", netmask:"255.255.255.0"
+	grafana.vm.network "forwarded_port", guest: 3000, host: 81
 	grafana.vm.provision "shell", path: "https://raw.githubusercontent.com/davetayl/Vagrant-General/master/setup-centos8-nu.sh"
 	grafana.vm.provision "shell", path: "./provision-grafana.sh"
   end

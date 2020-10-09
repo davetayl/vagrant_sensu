@@ -1,6 +1,6 @@
 # vagrant_sensu
 ## Purpose
-This PoC is intended to provide a plaform for testing Sensu, as such the following functions/components will be installed:-
+This PoC is intended to provide a plaform for testing Sensu as a low touch customer experience monitoring tool, as such the following functions/components will be installed:-
 * Sensue Backend
     * Sensue Backend - Used as the server componets of Sensu, providing modelling, metric collection etc
     * InfluxDB - Used for storage or time series data related to checks run on using sensu agents

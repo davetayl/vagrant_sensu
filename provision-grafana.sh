@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/env bash
 
 # Configure script
 set -e # Stop script execution on any error
@@ -6,7 +6,7 @@ echo ""; echo "-----------------------------------------"
 
 # Configure variables
 MYHOST=gafana
-MYHOSIP="10.0.0.19"
+MYHOSTIP="10.0.0.19"
 echo "- Variables set -"
 
 # Set system name

@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/env bash
 
 # Configure script
 set -e # Stop script execution on any error
@@ -6,7 +6,7 @@ echo ""; echo "-----------------------------------------"
 
 # Configure variables
 MYHOST=agent1
-MYHOSIP="10.0.0.33"
+MYHOSTIP="10.0.0.33"
 echo "- Variables set -"
 
 # Set system name
@@ -17,11 +17,12 @@ EOF
 echo "- Name set -"
 
 # Install tools
-dnf -yqe 3 install net-tools python3
+dnf -yqe 3 install net-tools python3 epel-release
+dnf -yqe 3 localinstall http://download.opensuse.org/repositories/home:/kayhayen/CentOS_8/noarch/nuitka-0.6.9.2-5.1.noarch.rpm
 echo "- Tools installed -"
 
 # Install Application
-curl -s https://packagecloud.io/install/repositories/sensu/stable/script.rpm.sh | sudo bash
+curl -s https://packagecloud.io/install/repositories/sensu/stable/script.rpm.sh | sudo bash > /dev/null 2>&1
 dnf -yqe 3 install sensu-go-agent sensu-go-cli
 cat <<EOF > /etc/sensu/agent.yml
 ---
@@ -32,6 +33,8 @@ cat <<EOF > /etc/sensu/agent.yml
 ##
 name: "$MYHOST"
 namespace: "default"
+subscriptions:
+- sla-sub
 
 ##
 # agent configuration
@@ -102,12 +105,17 @@ statsd-metrics-host: "127.0.0.1"
 statsd-metrics-port: 8125
 EOF
 
+cat <<EOF > /etc/sudoers.d/sensu
+sensu	ALL=NOPASSWD:/usr/bin/check-path.py	ALL
+EOF
+
 echo "- Sensu installed -"
 
 # Install check-path.py
-curl -s "https://raw.githubusercontent.com/davetayl/Nagios-Plugins/master/check-path/check-path.py" -o /usr/bin/check-path.py
-chmod +x /usr/bin/check-path.py
-pip3 install icmplib
+curl --header "PRIVATE-TOKEN: Q9fHRa53yxX9-D8Gc8P4" -s "https://gitlab.com/api/v4/projects/20355815/repository/files/check-path.py/raw?ref=master" -o /tmp/check-path.py > /dev/null 2>&1
+pip3 install icmplib > /dev/null 2>&1
+nuitka3 --recurse-all /tmp/check-path.py -o /usr/bin/check-path.bin > /dev/null 2>&1
+chmod +s /usr/bin/check-path.bin > /dev/null 2>&1
 echo "- check-path.py Installed -"
 
 systemctl enable --now sensu-agent

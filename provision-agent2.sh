@@ -18,7 +18,8 @@ echo "- Name set -"
 
 # Install tools
 dnf -yqe 3 install net-tools python3 epel-release
-dnf -yqe 3 localinstall http://download.opensuse.org/repositories/home:/kayhayen/CentOS_8/noarch/nuitka-0.6.9.2-5.1.noarch.rpm
+dnf -yqe 3 localinstall http://download.opensuse.org/repositories/home:/kayhayen/CentOS_8/noarch/nuitka-0.6.9.4-5.1.noarch.rpm
+pip3 install icmplib > /dev/null 2>&1
 echo "- Tools installed -"
 
 # Install Application
@@ -112,11 +113,16 @@ EOF
 echo "- Sensu installed -"
 
 # Install check-path.py
-curl -s "https://raw.githubusercontent.com/davetayl/Nagios-Plugins/master/check-path/check-path.py" -o /tmp/check-path.py > /dev/null 2>&1
-pip3 install icmplib > /dev/null 2>&1
+curl  -s "https://raw.githubusercontent.com/davetayl/Nagios-Plugins/master/check-path/check-path.py" -o /tmp/check-path.py > /dev/null 2>&1
 nuitka3 --recurse-all /tmp/check-path.py -o /usr/bin/check-path.bin > /dev/null 2>&1
 chmod +s /usr/bin/check-path.bin > /dev/null 2>&1
 echo "- check-path.py Installed -"
+
+# Install check-path-inf.py
+curl  -s "https://raw.githubusercontent.com/davetayl/influxdb-plugins/main/check-path/check-path-inf.py" -o /tmp/check-path-inf.py > /dev/null 2>&1
+nuitka3 --recurse-all /tmp/check-path-inf.py -o /usr/bin/check-path-inf.bin > /dev/null 2>&1
+chmod +s /usr/bin/check-path-inf.bin > /dev/null 2>&1
+echo "- check-path-inf.py Installed -"
 
 systemctl enable --now sensu-agent
 echo "- Sensu started -"

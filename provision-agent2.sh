@@ -18,7 +18,7 @@ echo "- Name set -"
 
 # Install tools
 dnf -yqe 3 install net-tools python3 epel-release
-dnf -yqe 3 localinstall http://download.opensuse.org/repositories/home:/kayhayen/CentOS_8/noarch/nuitka-0.6.9.4-5.1.noarch.rpm
+dnf -yqe 3 localinstall http://download.opensuse.org/repositories/home:/kayhayen/CentOS_8/noarch/nuitka-0.6.9.4-5.2.noarch.rpm
 pip3 install icmplib > /dev/null 2>&1
 echo "- Tools installed -"
 

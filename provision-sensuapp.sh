@@ -55,8 +55,10 @@ sensuctl check set-output-metric-format check-path nagios_perfdata
 sensuctl check create check-path-inf -c "check-path-inf.bin 8.8.8.8" -s "sla-sub" -i "10" 
 sensuctl check set-output-metric-format check-path-inf influxdb_line
 # Create Debug handler
-sensuctl handler create debug --type pipe --command "cat | python3 -m json.tool > /var/log/sensu/debug-event.json"
-sensuctl check  set-handlers check-path debug
+sensuctl handler create debug-check --type pipe --command "cat | python3 -m json.tool > /var/log/sensu/debug-check.json"
+sensuctl check  set-handlers check-path debug-check
+sensuctl handler create debug-check-inf --type pipe --command "cat | python3 -m json.tool > /var/log/sensu/debug-check-inf.json"
+sensuctl check  set-handlers check-path-inf debug-check-inf
 echo "- Sensu started -"
 
 # Configure InfluxDB integration

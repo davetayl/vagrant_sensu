@@ -49,7 +49,7 @@ sensuctl configure -n --url http://127.0.0.1:8080 --username admin --password pa
 # mutator create status-metric --namespace default -c "sensu-check-status-metric-mutator" -r "nixwiz/sensu-check-status-metric-mutator"
 sensuctl asset add sensu/sensu-influxdb-handler
 # Create Check-path
-sensuctl check create check-path -c "check-path.bin -t 1 8.8.8.8" -s "sla-sub" -i "10" 
+sensuctl check create check-path -c "check-path.bin -t 2 8.8.8.8" -s "sla-sub" -i "10" 
 sensuctl check set-output-metric-format check-path nagios_perfdata
 # Create Check-path-inf
 sensuctl check create check-path-inf -c "check-path-inf.bin 8.8.8.8" -s "sla-sub" -i "10" 
